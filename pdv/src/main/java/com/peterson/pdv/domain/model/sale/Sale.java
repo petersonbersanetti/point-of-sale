@@ -29,7 +29,7 @@ public class Sale {
     @JoinColumn (name="user_id")
     private User user;
 
-    @OneToMany (mappedBy = "sale")
+    @OneToMany (mappedBy = "sale", fetch = FetchType.LAZY)
     private List<ItemSale> items;
 
 

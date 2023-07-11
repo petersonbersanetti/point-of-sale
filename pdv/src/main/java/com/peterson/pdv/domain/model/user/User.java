@@ -1,9 +1,12 @@
 package com.peterson.pdv.domain.model.user;
 
+import com.peterson.pdv.domain.model.sale.Sale;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -17,10 +20,12 @@ public class User {
     @Column (name="user_id")
     private Long id;
 
-    @Column (name=" ")
+    @Column (name="user_name")
     private String name;
 
-    @Column (name=" ")
     private boolean isEnable;
+
+    @OneToMany(mappedBy = "user")
+    private List<Sale> sale;
 
 }
