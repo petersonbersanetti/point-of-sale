@@ -17,9 +17,3 @@ n
 >pdv/src/main/java/com/peterson/pdv/domain/model/sale/Sale.java,e\c\ec9a4a50134d6575f3ade803128da45baab57884
 v
 Fpdv/src/main/java/com/peterson/pdv/domain/model/itemSale/ItemSale.java,b\9\b9840d2805e97b26a18076f28f0999204a3ad924
-r
-Bsrc/main/java/com/peterson/pdv/domain/model/itemSale/ItemSale.java,8\b\8b28879c7ca15b4694f532ae6eddc27d1e389a1e
-j
-:src/main/java/com/peterson/pdv/domain/model/user/User.java,1\2\12880fd9b6f8718c3bc22bef467d53361216b0a5
-j
-:src/main/java/com/peterson/pdv/domain/model/sale/Sale.java,4\5\45dcf67c059573b8084f17b1607e2a93494d7449
