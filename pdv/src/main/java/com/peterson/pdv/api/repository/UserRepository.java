@@ -1,6 +1,6 @@
 package com.peterson.pdv.api.repository;
 
-import com.peterson.pdv.domain.model.product.Product;
+import com.peterson.pdv.domain.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

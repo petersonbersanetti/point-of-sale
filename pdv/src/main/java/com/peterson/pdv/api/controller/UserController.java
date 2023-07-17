@@ -1,6 +1,7 @@
 package com.peterson.pdv.api.controller;
 
 import com.peterson.pdv.api.repository.UserRepository;
+import com.peterson.pdv.domain.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,10 @@ public class UserController {
         }
 
     @PostMapping()
-    public ResponseEntity post (RequestBody User user){
+    public ResponseEntity post (@RequestBody User user){
         try{
-            return new ResponseEntity(userRepository.save(user), HttpStatus.CREATED);
-        }catch (Exception erro){
+            return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
+        }catch (Exception error){
             return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
