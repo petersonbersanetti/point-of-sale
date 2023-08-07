@@ -23,6 +23,7 @@ public class User {
     @Column (name="user_name")
     private String name;
 
+    @Column (name="user_is_enable")
     private boolean isEnable;
 
     @OneToMany(mappedBy = "user")
