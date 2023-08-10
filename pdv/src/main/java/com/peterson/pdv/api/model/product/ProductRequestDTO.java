@@ -9,5 +9,11 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductRequestDTO {
+
+    private long productid;
+    private int quantity;
+
+
 }
