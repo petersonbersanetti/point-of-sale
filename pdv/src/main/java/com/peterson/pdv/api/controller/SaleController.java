@@ -1,5 +1,7 @@
 package com.peterson.pdv.api.controller;
 
+import com.peterson.pdv.api.exceptionhandler.InvalidOperationException;
+import com.peterson.pdv.api.exceptionhandler.NoItemException;
 import com.peterson.pdv.api.model.sale.SaleRequestDTO;
 import com.peterson.pdv.domain.service.sale.SaleService;
 import jdk.management.jfr.RemoteRecordingStream;
@@ -30,15 +32,21 @@ public class SaleController {
     }
 
     @GetMapping ("{id}")
-    public ResponseEntity getById(@PathVariable long id){
-        return new ResponseEntity(saleService.getById(id), HttpStatus.OK);
+    public ResponseEntity getById(@PathVariable long id) {
+        try {
+            return new ResponseEntity(saleService.getById(id), HttpStatus.OK);
+        } catch (NoItemException | InvalidOperationException error) {
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping()
     public ResponseEntity post (@RequestBody SaleRequestDTO saleRequestDTO){
-        try{
+        try {
             long id = saleService.save(saleRequestDTO);
-            return new ResponseEntity<>("Venda Realizada com sucesso: " +id, HttpStatus.CREATED);
+            return new ResponseEntity<>("Venda Realizada com sucesso: " + id, HttpStatus.CREATED);
+        } catch (NoItemException | InvalidOperationException error) {
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception error){
             return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

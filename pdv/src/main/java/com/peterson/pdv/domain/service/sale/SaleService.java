@@ -1,5 +1,7 @@
 package com.peterson.pdv.domain.service.sale;
 
+import com.peterson.pdv.api.exceptionhandler.InvalidOperationException;
+import com.peterson.pdv.api.exceptionhandler.NoItemException;
 import com.peterson.pdv.api.model.product.ProductInfoRequestDTO;
 import com.peterson.pdv.api.model.product.ProductRequestDTO;
 import com.peterson.pdv.api.model.sale.SaleInfoRequestDTO;
@@ -57,7 +59,8 @@ public class SaleService {
 
     @Transactional
     public long save(SaleRequestDTO saleRequestDTO){
-        User user = userRepository.findById(saleRequestDTO.getUserid()).get();
+        User user = userRepository.findById(saleRequestDTO.getUserid())
+                .orElseThrow(()-> new NoItemException("Usuário não encontrado!"));
 
         Sale sale = new Sale();
         sale.setUser(user);
@@ -83,6 +86,10 @@ public class SaleService {
 
     private List<ItemSale> getItemSale (List<ProductRequestDTO>  products) {
 
+        if(products.isEmpty()){
+            throw new InvalidOperationException("Não é possível adicionar a venda sem itens!");
+        }
+
         return products.stream().map(item -> {
             Product product = productRepository.getReferenceById(item.getProductid());
 
@@ -90,12 +97,25 @@ public class SaleService {
             itemSale.setProduct(product);
             itemSale.setQuantity(item.getQuantity());
 
+            if(product.getQuantity() == 0) {
+                throw new NoItemException("Produto sem Estoque!");
+            } else if (product.getQuantity() < item.getQuantity()){
+                throw new InvalidOperationException(
+                        String.format("Quantidade de itens da venda (%s) " +
+                                "é maior do que a quantidade disponível no Estoque! (%s)", item.getQuantity(), product.getQuantity()));
+            } else {
+                int total = product.getQuantity() - item.getQuantity();
+                product.setQuantity(total);
+                productRepository.save(product);
+            }
+
             return itemSale;
         }).collect(Collectors.toList());
     }
 
     public SaleInfoRequestDTO getById(long id) {
-        Sale sale = saleRepository.findById(id).get();
+        Sale sale = saleRepository.findById(id)
+                .orElseThrow(()-> new NoItemException("Venda não encontrada"));
         return getSaleInfo(sale);
     }
 }
